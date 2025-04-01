@@ -79,3 +79,16 @@ git fetch
 git pull
 
 git branch -vv
+
+#项目在本地误操作导致整个页面错乱，建议使用远程仓库覆盖本地
+
+拉取远程最新代码并强制覆盖本地
+
+# 切换到主分支（假设是 main）
+git checkout main
+
+# 下载远程最新代码（不自动合并）
+git fetch origin main
+
+# 强制将本地分支重置到远程状态（丢弃所有本地修改）
+git reset --hard origin/main
