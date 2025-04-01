@@ -92,3 +92,5 @@ git fetch origin main
 
 # 强制将本地分支重置到远程状态（丢弃所有本地修改）
 git reset --hard origin/main
+
+ git switch dev
