@@ -59,6 +59,9 @@ git init
 
 git remote add origin xxx
 
+#推送
+git push -u origin main
+
 #检查远程仓库
 git remote -v
 
