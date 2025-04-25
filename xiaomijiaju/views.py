@@ -4,55 +4,34 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db.models import Q
 import re
-
-from xiaomijiaju.models import Product
+from django.core.paginator import Paginator
 from xiaomijiaju.models import Product, InstallationRequest
 
 def product_list(request):
-    try:
-        products = Product.objects.all()
-    except:
-        products = [
-            {'name': '小米厨房家具橱柜', 'price': 2499.00, 'image': 'img/chug.jpg', 'category': '储物'},
-            {'name': '小米厨房家具岛台', 'price': 3499.00, 'image': 'img/dt.jpg', 'category': '桌台'},
-            {'name': '小米厨房家具储物柜', 'price': 1299.00, 'image': 'img/cwg.jpg', 'category': '储物'},
-            {'name': '小米厨房家具吧台', 'price': 1899.00, 'image': 'img/bt.jpg', 'category': '桌台'},
-            {'name': '小米厨房家具餐边柜', 'price': 1599.00, 'image': 'img/cbg.jpg', 'category': '储物'},
-            {'name': '小米厨房家具置物架', 'price': 699.00, 'image': 'img/zwj.jpg', 'category': '储物'},
-            {'name': '小米厨房家具酒柜', 'price': 2799.00, 'image': 'img/jg.jpg', 'category': '储物'},
-            {'name': '小米厨房家具折叠桌', 'price': 1199.00, 'image': 'img/zdz.jpg', 'category': '桌台'},
-            {'name': '小米厨房家具推车', 'price': 899.00, 'image': 'img/tc.jpg', 'category': '桌台'},
-            {'name': '小米厨房家具吊柜', 'price': 1699.00, 'image': 'img/dt.jpg', 'category': '储物'},
-            {'name': '小米厨房家具冰箱', 'price': 3999.00, 'image': 'img/bx.jpg', 'category': '电器'},
-            {'name': '小米厨房家具空调', 'price': 2999.00, 'image': 'img/kt.jpg', 'category': '电器'},
-            {'name': '小米厨房家具净水器', 'price': 1499.00, 'image': 'img/jsq.jpg', 'category': '电器'},
-            {'name': '小米厨房家具烤箱', 'price': 1999.00, 'image': 'img/kx.jpg', 'category': '电器'},
-            {'name': '小米厨房家具微波炉', 'price': 999.00, 'image': 'img/vbl.png', 'category': '电器'},
-            {'name': '小米厨房家具电磁炉', 'price': 799.00, 'image': 'img/dcl.jpg', 'category': '电器'},
-            {'name': '小米厨房家具冰箱Pro', 'price': 4999.00, 'image': 'img/bx.jpg', 'category': '电器'},
-            {'name': '小米厨房家具空调Mini', 'price': 2499.00, 'image': 'img/kt.jpg', 'category': '电器'},
-            {'name': '小米厨房家具净水器Plus', 'price': 1999.00, 'image': 'img/jsq.jpg', 'category': '电器'},
-            {'name': '小米厨房家具洗碗机', 'price': 2999.00, 'image': 'img/xwj.jpg', 'category': '电器'},
-        ]
+    query = request.GET.get('q', '')
+    category = request.GET.get('category', '')
+    price = request.GET.get('price', '')
 
-    if isinstance(products, list) is False:
-        query = request.GET.get('q')
-        category = request.GET.get('category')
-        price = request.GET.get('price')
+    products = Product.objects.all()
 
-        if query:
-            products = products.filter(Q(name__icontains=query) | Q(description__icontains=query))
-        if category:
-            products = products.filter(category=category)
-        if price:
-            if price == '0-1000':
-                products = products.filter(price__gte=0, price__lte=1000)
-            elif price == '1000-2000':
-                products = products.filter(price__gte=1000, price__lte=2000)
-            elif price == '2000+':
-                products = products.filter(price__gte=2000)
+    if query:
+        products = products.filter(Q(name__icontains=query))
+    if category:
+        products = products.filter(category=category)
+    if price:
+        if price == '0-1000':
+            products = products.filter(price__gte=0, price__lte=1000)
+        elif price == '1000-2000':
+            products = products.filter(price__gte=1000, price__lte=2000)
+        elif price == '2000+':
+            products = products.filter(price__gte=2000)
 
-    return render(request, 'product_list.html', {'products': products})
+    paginator = Paginator(products.order_by('id'), 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'product_list.html', {'page_obj': page_obj, 'query': query, 'category': category, 'price': price})
+
 
 def category_nav(request):
     categories = {
