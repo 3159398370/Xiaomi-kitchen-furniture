@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>  
+      {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小米家具 - 关于小米</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        #page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #ff6700;
+            text-align: center;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-content p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .about-content h2 {
+            font-size: 20px;
+            color: #333;
+            margin: 20px 0 10px;
+        }
+
+        .about-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        #pagination {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        #pagination a {
+            padding: 8px 16px;
+            margin: 0 5px;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        #pagination a:hover,
+        #pagination a.active {
+            background: #ff6700;
+            color: #fff;
+            border-color: #ff6700;
+        }
+        #footer {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid #ddd;
+            margin-top: 40px;
+            background: #fafafa;
+        }
+
+        #footer img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        #footer .footnote {
+            font-size: 12px;
+            color: #666;
+        }
+
+        #footer .footnote a {
+            color: #ff6700;
+            text-decoration: none;
+        }
+
+        #footer .footnote a:hover {
+            text-decoration: underline;
+        }
+    </style>
+   
+</head>
+<body>
+   <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <a class="navbar-brand" href="index.html">
+            <img src="{% static 'img/OIP.jpg' %}" alt="小米logo" width="200" height="100">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+         </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'product_list' %}">产品列表</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'category_nav' %}">分类导航</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'kitchen_furniture' %}">厨房家具</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'installation' %}">安装预约</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'about' %}">关于小米  <span class="sr-only">(current)</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">登录</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'register' %}">注册</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{# <button type="button" class="btn btn-primary" onclick="location.href='{% url 'product_list' %}'">登录</button>#}
+    <div id="page">
+        <div id="body">
+            <div class="section-title">关于小米</div>
+            <div class="about-content">
+                <p>小米公司成立于2010年4月，是一家以“为发烧而生”为理念的科技公司，致力于通过创新技术为用户提供高品质的智能硬件和互联网服务。小米的产品涵盖智能手机、智能家居、家具家电等多个领域，以极致性价比和用户体验赢得了全球用户的喜爱。</p>
+                <h2>我们的使命</h2>
+                <p>小米始终坚持“让每个人都能享受科技的乐趣”的使命，通过不断研发和优化产品，为用户带来更智能、更便捷的生活方式。小米厨房家具系列是这一使命的延伸，旨在打造现代化的智能厨房解决方案。</p>
+                <img src="{% static 'img/xmtd.jpg' %}" alt="小米家具" loading="lazy">
+           
+                <h2>我们的愿景</h2>
+                <p>未来，小米将继续深耕智能家居领域，推出更多创新产品，构建一个无缝连接的智能生态系统，让科技融入生活的每一个角落。</p>
+            </div>
+        </div>
+        <div id="pagination">
+            <a href="{% url 'product_list' %}?page=1" class="{% if page == 1 %}active{% endif %}">1</a>
+            <a href="{% url 'category_nav' %}?page=2" class="{% if page == 2 %}active{% endif %}">2</a >
+            <a href="{% url 'installation' %}?page=3" class="{% if page == 3 %}active{% endif %}">3</a >
+            <a href="{% url 'about' %}?page=4" class="{% if page == 4 %}active{% endif %}">4</a >
+            <a href="{% url 'product_list' %}?page={{ page|add:1}}">下一页</a >
+        </div>
+        <footer id="footer">
+            <img src="{% static 'img/OIP.jpg' %}" alt="小米家具" loading="lazy">
+            <p class="footnote">
+                © 小米厨房家具 2025. All rights reserved.
+                <a href="http://www.mi.com/" title="小米官网" target="_blank">小米官网</a>
+            </p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

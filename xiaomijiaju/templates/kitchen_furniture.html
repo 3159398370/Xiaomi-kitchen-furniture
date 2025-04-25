@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+     {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小米厨房家具</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        #page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #ff6700;
+            text-align: center;
+        }
+
+        #banner {
+            position: relative;
+            margin-top: 20px;
+        }
+
+        #banner img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        #banner .banner-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        #banner .banner-text h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        #banner .banner-text p {
+            font-size: 18px;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            text-align: center;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .feature-list li:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-list li img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .feature-list li h3 {
+            font-size: 18px;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .feature-list li p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .product-list li {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .product-list li:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-list li a img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-list li div {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .product-list li div a {
+            font-size: 14px;
+            color: #333;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .product-list li div a:hover {
+            color: #ff6700;
+        }
+
+        .product-list li div p {
+            font-size: 16px;
+            color: #ff6700;
+            font-weight: bold;
+            margin: 0;
+        }
+        #pagination {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        #pagination a {
+            padding: 8px 16px;
+            margin: 0 5px;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        #pagination a:hover,
+        #pagination a.active {
+            background: #ff6700;
+            color: #fff;
+            border-color: #ff6700;
+        }
+        #footer {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid #ddd;
+            margin-top: 40px;
+            background: #fafafa;
+        }
+       footer img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        #footer .footnote {
+            font-size: 12px;
+            color: #666;
+        }
+
+        #footer .footnote a {
+            color: #ff6700;
+            text-decoration: none;
+        }
+
+        #footer .footnote a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <a class="navbar-brand" href="product_list.html">
+            <img src="{% static 'img/OIP.jpg' %}" alt="小米logo" width="200" height="100" loading="lazy">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+   <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'product_list' %}">产品列表</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'category_nav' %}">分类导航</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'kitchen_furniture' %}">厨房家具 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'installation' %}">安装预约</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">关于小米</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">登录</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">注册</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 其他内容 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <div id="page">
+        <div id="body">
+            <div id="banner">
+                <img src="{% static 'img/w.jpg' %}" alt="小米厨房家具" loading="lazy">
+                <div class="banner-text">
+                    <h1>小米厨房家具</h1>
+                    <p>智能设计，打造现代厨房新体验</p>
+                </div>
+            </div>
+
+            <div id="features">
+                <div class="section-title">特色亮点</div>
+                <ul class="feature-list">
+                    <li>
+                        <img src="{% static 'img/znkz.jpg' %}"  %}" alt="智能控制" loading="lazy">
+                        <h3>智能控制</h3>
+                        <p>通过小米智能家居APP远程操控，厨房生活更便捷。</p>
+                    </li>
+                    <li>
+                        <img src="{% static 'img/jcsj.jpg' %}" alt="紧凑设计" loading="lazy">
+                        <h3>紧凑设计</h3>
+                        <p>优化空间利用，适合各种厨房大小，提升使用效率。</p>
+                    </li>
+                    <li>
+                        <img src="{% static 'img/jnhb.jpg' %}" alt="节能环保" loading="lazy">
+                        <h3>节能环保</h3>
+                        <p>采用节能技术，减少能耗，绿色生活从厨房开始。</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="products">
+                <div class="section-title">推荐产品</div>
+                <ul class="product-list">
+                    <li>
+                        <a href="#"><img src="{% static 'img/chug.jpg' %}" alt="厨房橱柜" loading="lazy"></a>
+                        <div>
+                            <a href="#">小米厨房家具橱柜</a>
+                            <p>尝鲜价 ¥2499</p>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#"><img src="{% static 'img/bx.jpg' %}" alt="厨房冰箱" loading="lazy"></a>
+                        <div>
+                            <a href="#">小米厨房家具冰箱</a>
+                            <p>尝鲜价 ¥3999</p>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#"><img src="{% static 'img/kt.jpg' %}" alt="厨房空调" loading="lazy"></a>
+                        <div>
+                            <a href="#">小米厨房家具空调</a>
+                            <p>尝鲜价 ¥2999</p>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#"><img src="{% static 'img/jsq.jpg' %}" alt="厨房净水器" loading="lazy"></a>
+                        <div>
+                            <a href="#">小米厨房家具净水器</a>
+                            <p>尝鲜价 ¥1499</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="pagination">
+            <a href="{% url 'product_list' %}?page=1" class="{% if page == 1 %}active{% endif %}">1</a>
+            <a href="{% url 'category_nav' %}?page=2" class="{% if page == 2 %}active{% endif %}">2</a >
+            <a href="{% url 'installation' %}?page=3" class="{% if page == 3 %}active{% endif %}">3</a >
+            <a href="{% url 'about' %}?page=4" class="{% if page == 4 %}active{% endif %}">4</a >
+            <a href="{% url 'installation' %}?page={{ page|add:1}}">下一页</a >
+        </div>
+        <footer id="footer">
+            <img src="{% static 'img/OIP.jpg' %}" alt="小米家具" loading="lazy">
+            <p class="footnote">
+                © 小米厨房家具 2025. All rights reserved.
+                <a href="http://www.mi.com/" title="小米官网" target="_blank">小米官网</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    {% load static %}
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>小米登录</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+        }
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+        }
+        .navbar-brand img {
+            width: 120px;
+            height: auto;
+        }
+        .nav-link {
+            color: #333;
+            font-size: 16px;
+            padding: 8px 15px;
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #ff6700;
+        }
+        .container {
+            max-width: 450px;
+            margin: 100px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #ff6700;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #e65c00;
+        }
+        .form-control {
+            height: 45px;
+            border-radius: 8px;
+            padding: 10px 40px 10px 15px; /* 留出图标空间 */
+            text-align: left;
+            transition: border-color 0.3s;
+        }
+        .form-control:focus {
+            border-color: #ff6700;
+            box-shadow: 0 0 5px rgba(255, 103, 0, 0.3);
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            background-color: #f8f8f8;
+        }
+        .password-toggle {
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 16px;
+            line-height: 1; /* 确保图标垂直居中 */
+        }
+        .password-field-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .alert-dismissible .btn-close {
+            padding: 0.75rem 1.25rem;
+        }
+        .social-icons a {
+            transition: transform 0.2s, opacity 0.3s;
+            display: inline-block;
+            position: relative;
+        }
+        .social-icons a:hover {
+            transform: scale(1.2);
+        }
+        .social-icons a:active {
+            opacity: 0.7;
+        }
+        .p6, .p7 {
+            margin: 5px 0;
+        }
+        .p7 a {
+            color: #ff6700;
+            text-decoration: none;
+        }
+        .p7 a:hover {
+            text-decoration: underline;
+        }
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1055;
+        }
+        .toast {
+            border-left: 4px solid #ff6700;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    <img src="{% static 'img/OIP.jpg' %}" alt="小米logo">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'product_list' %}">产品列表</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'category_nav' %}">分类导航</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'kitchen_furniture' %}">厨房家具</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'installation' %}">安装预约</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">关于小米</a></li>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">退出登录</a></li>
+                        {% else %}
+                            <li class="nav-item"><a class="nav-link active" href="{% url 'login' %}">登录</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">注册</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="container">
+        {% if messages %}
+            <div class="mt-3">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <h2 class="text-center mb-4">登录</h2>
+        <form method="post" action="{% url 'login' %}" id="loginForm">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <label for="loginUsername" class="form-label">用户名/手机号</label>
+                <input type="text" class="form-control" id="loginUsername" name="username"
+                       placeholder="请输入用户名或手机号" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="loginPassword" class="form-label">密码</label>
+                <div class="password-field-container">
+                    <input type="password" class="form-control" id="loginPassword" name="password"
+                           placeholder="请输入密码" required minlength="6">
+                    <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+                </div>
+                <div class="invalid-feedback">密码至少6位</div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">登录</button>
+        </form>
+        <div class="mt-4 text-center">
+            <p>其他登录方式</p>
+            <div class="d-flex justify-content-center gap-3 social-icons">
+                <a href="#" class="text-decoration-none" data-social="weibo"><i class="fab fa-weibo fa-2x" style="color: #e52d27;"></i></a>
+                <a href="#" class="text-decoration-none" data-social="qq"><i class="fab fa-qq fa-2x" style="color: #00b7ee;"></i></a>
+                <a href="#" class="text-decoration-none" data-social="weixin"><i class="fab fa-weixin fa-2x" style="color: #44b549;"></i></a>
+            </div>
+        </div>
+        <div class="mt-3 text-center">
+            没有账号？<a href="{% url 'register' %}" class="text-primary">立即注册</a>
+        </div>
+    </main>
+    <footer>
+        <p class="p6">© 小米厨房家具 2025</p>
+        <hr>
+        <p class="p7">All rights reserved. <a href="https://www.mi.com/shop/category/list">小米官网</a></p>
+    </footer>
+    <!-- Toast 容器 -->
+    <div class="toast-container">
+        <div class="toast" id="socialToast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">提示</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body"></div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 密码显示/隐藏
+        $('#togglePassword').click(function() {
+            const passwordField = $('#loginPassword');
+            const type = passwordField.attr('type') === 'password' ? 'text' : 'password';
+            passwordField.attr('type', type);
+            $(this).toggleClass('fa-eye fa-eye-slash');
+        });
+
+        // 第三方登录点击效果
+        $('.social-icons a').click(function(e) {
+            e.preventDefault();
+            const social = $(this).data('social');
+            const toast = new bootstrap.Toast($('#socialToast'));
+            $('#socialToast .toast-body').text(`即将支持 ${social.charAt(0).toUpperCase() + social.slice(1)} 登录功能！`);
+            toast.show();
+        });
+
+        // 表单验证
+        $('#loginForm').on('submit', function(e) {
+            const password = $('#loginPassword').val();
+            const username = $('#loginUsername').val();
+            if (password.length < 6) {
+                e.preventDefault();
+                $('#loginPassword').addClass('is-invalid');
+            }
+            if (!username) {
+                e.preventDefault();
+                $('#loginUsername').addClass('is-invalid');
+            }
+        });
+    </script>
+</body>
+</html>
