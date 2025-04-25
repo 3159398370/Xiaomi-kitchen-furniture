@@ -86,11 +86,11 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, '登录成功！')
-            next_url = request.POST.get('next', 'product_list')
-            return redirect(next_url)
+            # 登录成功，传递 login_success
+            return render(request, 'login.html', {'login_success': True, 'next': request.POST.get('next', 'product_list')})
         else:
-            messages.error(request, '用户名或密码错误')
+            # 登录失败，传递 login_error
+            return render(request, 'login.html', {'login_error': True, 'next': request.POST.get('next', '')})
     return render(request, 'login.html', {'next': request.GET.get('next', '')})
 
 def register(request):

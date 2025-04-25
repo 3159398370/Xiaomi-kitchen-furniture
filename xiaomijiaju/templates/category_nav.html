@@ -267,14 +267,23 @@
                 <a class="nav-link" href="{% url 'about' %}">关于小米</a>
             </li>
         </ul>
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'login' %}">登录</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'register' %}">注册</a>
-            </li>
-        </ul>
+          <ul class="navbar-nav ml-auto">
+              {% if user.is_authenticated %}
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'logout' %}">退出登录</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'delete_account' %}">删除账号</a>
+                  </li>
+              {% else %}
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'login' %}">登录</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'register' %}">注册</a>
+                  </li>
+              {% endif %}
+          </ul>
     </div>
 </nav>
     <div id="page">
